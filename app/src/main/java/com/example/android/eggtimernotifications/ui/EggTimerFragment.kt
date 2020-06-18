@@ -59,6 +59,7 @@ class EggTimerFragment : Fragment() {
         // TODO: Step 3.1 create a new channel for FCM
 
         // TODO: Step 3.4 call subscribe topics on start
+        subscribeTopic()
 
         return binding.root
     }
@@ -93,6 +94,17 @@ class EggTimerFragment : Fragment() {
     }
 
     // TODO: Step 3.3 subscribe to breakfast topic
+
+    private fun subscribeTopic() {
+        FirebaseMessaging.getInstance().subscribeToTopic(TOPIC)
+            .addOnCompleteListener { task ->
+                var msg = getString(R.string.message_subscribed)
+                if (!task.isSuccessful) {
+                    msg = getString(R.string.message_subscribe_failed)
+                }
+                Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
+            }
+    }
 
     companion object {
         fun newInstance() = EggTimerFragment()

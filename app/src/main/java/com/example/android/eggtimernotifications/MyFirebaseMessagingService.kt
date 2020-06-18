@@ -37,7 +37,13 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
         // TODO Step 3.5 check messages for data
         // Check if message contains a data payload.
-
+        remoteMessage?.data.let {
+            Log.d(TAG, "Message data: ${remoteMessage?.data}")
+        }
+        remoteMessage?.notification.let {
+            Log.d(TAG, "Message Notif Body: ${it?.body}")
+            sendNotification(it?.body as String)
+        }
 
         // TODO Step 3.6 check messages for notification and call sendNotification
         // Check if message contains a notification payload.
@@ -47,6 +53,11 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
     //TODO Step 3.2 log registration token
     // [START on_new_token]
+    override fun onNewToken(token: String?) {
+        super.onNewToken(token)
+        Log.d(TAG, "Refreshed token: $token")
+        sendRegistrationToServer(token)
+    }
 
     // [END on_new_token]
 
